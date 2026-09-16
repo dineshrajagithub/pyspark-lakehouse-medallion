@@ -1,0 +1,33 @@
+{
+  "name": "medallion-lakehouse-daily",
+  "tasks": [
+    {
+      "task_key": "run_medallion_pipeline",
+      "spark_python_task": {
+        "python_file": "jobs/run_pipeline.py",
+        "source": "GIT",
+        "parameters": ["--raw", "/Volumes/main/retail/raw", "--lake", "/Volumes/main/retail/lake", "--format", "delta"]
+      },
+      "job_cluster_key": "etl_cluster"
+    }
+  ],
+  "job_clusters": [
+    {
+      "job_cluster_key": "etl_cluster",
+      "new_cluster": {
+        "spark_version": "15.4.x-scala2.12",
+        "node_type_id": "i3.xlarge",
+        "num_workers": 2
+      }
+    }
+  ],
+  "git_source": {
+    "git_url": "https://github.com/dineshrajagithub/pyspark-lakehouse-medallion",
+    "git_provider": "gitHub",
+    "git_branch": "main"
+  },
+  "schedule": {
+    "quartz_cron_expression": "0 0 2 * * ?",
+    "timezone_id": "UTC"
+  }
+}
